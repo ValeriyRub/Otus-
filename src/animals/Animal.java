@@ -2,7 +2,7 @@ package animals;
 
 import java.util.Set;
 
-public class Animal {
+public abstract class Animal {
 
     private String name;
     private int age;
@@ -83,9 +83,6 @@ public class Animal {
 
         if(ostatok >= 2 && ostatok <= 4){
             return "года";
-        }
-        if(ostatok >=5){
-            return "лет";
         }
 
         return "лет";

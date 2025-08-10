@@ -1,5 +1,6 @@
 import animals.Animal;
 import birds.Duck;
+import fabric.AnimalFabric;
 import pets.Cat;
 import pets.Dog;
 
@@ -23,46 +24,73 @@ public class Main {
       switch (command){
          case ADD -> {
             System.out.println("Введите животное из списка: cat/dog/duck");
-            input = scan.next();
+            input = scan.next().toLowerCase().trim();
 
-            String name;
-            int age;
-            int weight;
-            String color;
 
-            System.out.println("Введите имя животного");
-            name = scan.next();
-            System.out.println("Введите возраст животного");
-            age = Integer.parseInt(scan.next());
-            System.out.println("Введите вес животного");
-            weight = Integer.parseInt(scan.next());
-            System.out.println("Введите цвет животного");
-            color = scan.next();
+            switch (input) {
+               case "cat", "dog", "duck" -> {
+                  String name;
+                  int age;
+                  int weight;
+                  String color;
 
-            Animal animals;
-            switch (input){
-               case "cat" -> animals = new Cat(name, age, weight, color);
-               case "dog" -> animals = new Dog(name, age, weight, color);
-               case "duck" -> animals = new Duck(name, age, weight, color);
-               default -> {
-                  System.out.println("Такого животного не существует повторите пожалуйста попытку с существующим животным");
-                  animals = null;
+                  System.out.println("Введите имя животного");
+                  name = scan.next();
+                  while (true) {
+                     System.out.println("Введите возраст животного");
+                     String ageInput = scan.next();
+                     try {
+                        age = Integer.parseInt(ageInput);
+                        if (age <= 0) {
+                           System.out.println("Возраст должен быть положительным числом.");
+                        } else {
+                           break;
+                        }
+                     } catch (NumberFormatException e) {
+                        System.out.println("Ошибка: возраст должен быть числом. Повторите ввод.");
+                     }
+                  }
+                  while (true) {
+                     System.out.println("Введите вес животного");
+                     String weightInput = scan.next();
+                     try {
+                        weight = Integer.parseInt(weightInput);
+                        if (weight <= 0) {
+                           System.out.println("Вес должен быть положительным числом.");
+                        } else {
+                           break;
+                        }
+                     } catch (NumberFormatException e) {
+                        System.out.println("Ошибка: вес должен быть числом. Повторите ввод.");
+                     }
+                  }
+                  System.out.println("Введите цвет животного");
+                  color = scan.next();
+
+                  Animal animals = AnimalFabric.createAnimal(input, name, age, weight, color);
+                  if (animals == null) {
+                     System.out.println("Такого животного не существует. Повторите попытку.");
+                     break;
+                  }
+
+                  animal.add(animals);
+                  animals.say();
+                  if (animals instanceof birds.Flying flyingAnimal) {
+                     flyingAnimal.fly();
+                  }
+                  System.out.println("Животное добавлено");
                }
             }
-            if (animals != null){
-               animal.add(animals);
-               animals.say();
-               System.out.println("Животное добавлено");
-            }
          }
+
          case LIST -> animal.forEach(System.out::println);
          case EXIT -> {
             menu = false;
+            System.out.println("Завершение программы");
          }
          default -> System.out.println("Вы ввели неверную команду");
       }
       }
-      System.out.println("Завершение программы");
    }
 }
 
