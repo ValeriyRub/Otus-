@@ -1,8 +1,5 @@
 import animals.Animal;
-import birds.Duck;
 import fabric.AnimalFabric;
-import pets.Cat;
-import pets.Dog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +11,7 @@ public class Main {
 
       Scanner scan = new Scanner(System.in);
 
-      boolean menu = true;
-      while (menu) {
+      while (true) {
          System.out.println("Выберите команду");
          System.out.println("add/list/exit");
       String input = scan.next().toUpperCase().trim();
@@ -23,9 +19,17 @@ public class Main {
       CommandData command = CommandData.of(input);
       switch (command){
          case ADD -> {
-            System.out.println("Введите животное из списка: cat/dog/duck");
-            input = scan.next().toLowerCase().trim();
 
+            while (true) {
+               System.out.println("Введите животное из списка: cat/dog/duck");
+               input = scan.next().toLowerCase().trim();
+
+               if (!input.equals("cat") && !input.equals("dog") && !input.equals("duck")) {
+                  System.out.println("Такого животного не существует. Повторите попытку.");
+               } else {
+                  break;
+               }
+            }
 
             switch (input) {
                case "cat", "dog", "duck" -> {
@@ -85,8 +89,9 @@ public class Main {
 
          case LIST -> animal.forEach(System.out::println);
          case EXIT -> {
-            menu = false;
             System.out.println("Завершение программы");
+            System.exit(0);
+
          }
          default -> System.out.println("Вы ввели неверную команду");
       }

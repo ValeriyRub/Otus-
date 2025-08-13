@@ -15,4 +15,6 @@ public class AnimalFabric {
             default -> null;
         };
     }
+
 }
+
